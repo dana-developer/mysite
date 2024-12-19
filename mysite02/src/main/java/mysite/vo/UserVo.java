@@ -1,6 +1,7 @@
 package mysite.vo;
 
 public class UserVo {
+	private Long id;
 	private String name;
 	private String email;
 	private String password;
@@ -37,4 +38,16 @@ public class UserVo {
 	public void setJoinDate(String joinDate) {
 		this.joinDate = joinDate;
 	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	@Override
+	public String toString() {
+		return "UserVo [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", gender="
+				+ gender + ", joinDate=" + joinDate + "]";
+	}
+	
 }
