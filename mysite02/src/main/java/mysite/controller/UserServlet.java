@@ -1,53 +1,31 @@
 package mysite.controller;
 
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import mysite.dao.UserDao;
-import mysite.vo.UserVo;
+import mysite.controller.action.main.MainAction;
+import mysite.controller.action.user.JoinAction;
+import mysite.controller.action.user.JoinFormAction;
+import mysite.controller.action.user.JoinSuccessAction;
 
 import java.io.IOException;
+import java.util.Map;
 
 
 @WebServlet("/user")
-public class UserServlet extends HttpServlet {
+public class UserServlet extends ActionServlet {
 	private static final long serialVersionUID = 1L;
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");
-		
-		String action = request.getParameter("a");
-		
-		// /user?a=joinform(GET)
-		if("joinform".equals(action)) {
+	
+	private Map<String, Action> mapAction = Map.of(
+			"joinform", new JoinFormAction(),
+			"join", new JoinAction(),
+			"joinsuccess", new JoinSuccessAction()
+	);
 			
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/user/joinform.jsp");
-			rd.forward(request, response);
-			
-		} else if("join".equals(action)) { // /user?a=joinform(POST)
-			
-			String name = request.getParameter("name");
-			String password = request.getParameter("password");
-			String email = request.getParameter("email");
-			String gender = request.getParameter("gender");
-			
-			UserVo vo = new UserVo();
-			vo.setName(name);
-			vo.setPassword(password);
-			vo.setEmail(email);
-			vo.setGender(gender);
-			
-			new UserDao().insert(vo);
-						
-			response.sendRedirect(request.getContextPath()+"/user?a=joinsuccess");
-			
-		} else if("joinsuccess".equals(action)) { // /user?a=joinsuccess
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/user/joinsuccess.jsp");
-			rd.forward(request, response);
-		}
+	@Override
+	protected Action getAction(String actionName) {
+		return mapAction.getOrDefault(actionName, new MainAction());
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
