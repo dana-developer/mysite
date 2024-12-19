@@ -30,7 +30,6 @@ public class UserDao {
 		}
 		
 		return count;	
-		
 	}
 	
 	public UserVo findByEmailAndPassword(String email, String password) {
@@ -64,6 +63,84 @@ public class UserDao {
 		return userVo;	
 	}
 	
+	public UserVo findById(Long id) {
+		UserVo userVo = null;
+		
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("select name, password, gender, email from user where id = ?");
+		){			
+			
+			pstmt.setLong(1, id);
+
+			ResultSet rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				String name = rs.getString(1);
+				String password = rs.getString(2);
+				String gender = rs.getString(3);
+				String email = rs.getString(4);
+				
+				userVo = new UserVo();
+				userVo.setId(id);
+				userVo.setName(name);
+				userVo.setPassword(password);
+				userVo.setGender(gender);
+				userVo.setEmail(email);
+			}
+			
+			rs.close();
+			
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		
+		return userVo;	
+	}
+	
+	public int update(Long id, String name, String gender) {
+		int count = 0;
+		
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("update user set name = ?, gender = ? where id = ?");
+		){			
+			
+			pstmt.setString(1, name);
+			pstmt.setString(2, gender);
+			pstmt.setLong(3, id);
+
+			count = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		
+		return count;
+	}
+	
+	public int update(Long id, String name, String gender, String password) {
+		int count = 0;
+		
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("update user set name = ?, gender = ?, password = ? where id = ?");
+		){			
+			
+			pstmt.setString(1, name);
+			pstmt.setString(2, gender);
+			pstmt.setString(3, password);
+			pstmt.setLong(4, id);
+
+			count = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		
+		return count;
+	}
+	
 	private Connection getConnection() throws SQLException{
 		Connection conn = null;
 		
@@ -78,5 +155,4 @@ public class UserDao {
 		
 		return conn;
 	}
-
 }
