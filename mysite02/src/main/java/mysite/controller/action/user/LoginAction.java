@@ -28,6 +28,7 @@ public class LoginAction implements Action {
 			
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/user/loginform.jsp");
 			rd.forward(request, response);
+			return;
 		}
 		
 		// 로그인 처리
