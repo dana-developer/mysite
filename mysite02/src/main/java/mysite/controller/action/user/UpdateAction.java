@@ -2,7 +2,6 @@ package mysite.controller.action.user;
 
 import java.io.IOException;
 
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,6 +27,7 @@ public class UpdateAction implements Action {
 			return;
 		}
 		
+		// 업데이트
 		String name = request.getParameter("name");
 		String password = request.getParameter("password");
 		String gender = request.getParameter("gender");
@@ -39,10 +39,9 @@ public class UpdateAction implements Action {
 		}
 		
 		// 변경된 회원정보로 세션 변경
-		UserVo vo = new UserDao().findById(authUser.getId());
-		session.setAttribute("authUser", vo);
+		authUser.setName(name);;
 					
-		response.sendRedirect(request.getContextPath());
+		response.sendRedirect(request.getContextPath() + "/user?a=updateform");
 	}
 
 }
