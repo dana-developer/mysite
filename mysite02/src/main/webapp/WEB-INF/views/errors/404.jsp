@@ -1,3 +1,6 @@
+<%@ taglib uri="jakarta.tags.core" prefix="c"%>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt"%>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -7,7 +10,7 @@
 </head>
 <body>
 	<h1>404 Not Found</h1>
-	<p> 
+	<p>
 		요청을 찾을 수 없습니다.
 	</p>
 </body>
