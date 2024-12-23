@@ -87,7 +87,7 @@ public class BoardDao {
 		
 		try (
 			Connection conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("select title, contents, user_id from board where id = ?");
+			PreparedStatement pstmt = conn.prepareStatement("select title, contents, user_id, g_no, o_no, depth from board where id = ?");
 		){	
 			pstmt.setLong(1, id);
 			ResultSet rs = pstmt.executeQuery();
@@ -96,11 +96,17 @@ public class BoardDao {
 				String title = rs.getString(1);
 				String contents = rs.getString(2);
 				Long userId = rs.getLong(3);
+				Long g_no = rs.getLong(4);
+				Long o_no = rs.getLong(5);
+				Long depth = rs.getLong(6);
 				
 				vo.setTitle(title);
 				vo.setContents(contents);
 				vo.setUserId(userId);
 				vo.setId(id);
+				vo.setgNo(g_no);
+				vo.setoNo(o_no);
+				vo.setDepth(depth);
 			}
 			
 			rs.close();
@@ -142,6 +148,93 @@ public class BoardDao {
 		){			
 			
 			pstmt.setLong(1, id);
+			count = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		
+		return count;
+	}
+	
+
+	public int insertOrigin(BoardVo vo, int gNo) {
+		int count = 0;
+		String sql = "insert into board (title, contents, hit, reg_date, g_no, o_no, depth, user_id)"
+			 +" values (? , ? , 0, now(), ?, 1, 0, ?)";
+		
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+		){			
+			
+			pstmt.setString(1, vo.getTitle());
+			pstmt.setString(2, vo.getContents());
+			pstmt.setInt(3, gNo);
+			pstmt.setLong(4, vo.getUserId());
+			count = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		
+		return count;
+	}
+	
+	public int findMaxGroupId() {
+		int count = 0;
+		
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("select ifnull(max(g_no), 1) from board");
+			ResultSet rs = pstmt.executeQuery();
+		){	
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		
+		return count;
+	}
+	
+	public int updateONo(BoardVo vo) {
+		int count = 0;
+		String sql = "update board set o_no = o_no+1 where g_no = ? and o_no >= ?";
+		
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+		){			
+			pstmt.setLong(1, vo.getgNo());
+			pstmt.setLong(2, vo.getoNo()+1);
+			count = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		
+		return count;
+	}
+	
+	public int insertReply(BoardVo vo) {
+		int count = 0;
+		String sql = "insert into board (title, contents, hit, reg_date, g_no, o_no, depth, user_id)"
+				   +" values (? , ? , 0, now(), ?, ?, ?, ?)";
+		
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+		){			
+			
+			pstmt.setString(1, vo.getTitle());
+			pstmt.setString(2, vo.getContents());
+			pstmt.setLong(3, vo.getgNo());
+			pstmt.setLong(4, vo.getoNo()+1);
+			pstmt.setLong(5, vo.getDepth()+1);
+			pstmt.setLong(6, vo.getUserId());
 			count = pstmt.executeUpdate();
 			
 		} catch (SQLException e) {

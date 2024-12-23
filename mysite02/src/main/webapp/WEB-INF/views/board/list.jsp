@@ -120,11 +120,10 @@
 						<li><a href="">▶</a></li>
 					</ul>
 				</div>					
-				<!-- pager 추가 -->
 				
 				<c:if test="${not empty authUser.id}">
 					<div class="bottom">
-						<a href="" id="new-book">글쓰기</a>
+						<a href="${pageContext.request.contextPath}/board?a=writeform&type=origin" id="new-book">글쓰기</a>
 					</div>
 				</c:if>			
 			</div>

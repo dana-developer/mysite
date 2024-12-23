@@ -5,6 +5,8 @@ import mysite.controller.action.board.ListAction;
 import mysite.controller.action.board.ModifyAction;
 import mysite.controller.action.board.ModifyFormAction;
 import mysite.controller.action.board.ViewAction;
+import mysite.controller.action.board.WriteAction;
+import mysite.controller.action.board.WriteFormAction;
 
 import java.util.Map;
 
@@ -16,7 +18,9 @@ public class BoardServlet extends ActionServlet {
 			"list", new ListAction(),
 			"view", new ViewAction(),
 			"modifyform", new ModifyFormAction(),
-			"modify", new ModifyAction()
+			"modify", new ModifyAction(),
+			"writeform", new WriteFormAction(),
+			"write", new WriteAction()
 	);
 
 	@Override

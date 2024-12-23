@@ -33,11 +33,14 @@
 					</tr>
 				</table>
 				<div class="bottom">
+					<c:if test="${not empty authUser.id}">
+						<a href="${pageContext.request.contextPath}/board?a=writeform&type=reply&boardId=${board.id}">답글 쓰기</a>
+					</c:if>
 					
 					<a href="${pageContext.request.contextPath}/board">글목록</a>
 					
 					<c:if test="${board.userId == authUser.id}">
-						<a href="${pageContext.request.contextPath}/board?a=modifyform">글수정</a>
+						<a href="${pageContext.request.contextPath}/board?a=modifyform&pageId=${board.id}">글수정</a>
 					</c:if>
 				</div>
 			</div>
