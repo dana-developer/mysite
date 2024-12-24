@@ -244,6 +244,25 @@ public class BoardDao {
 		return count;
 	}
 	
+	public int deletById(Long boardId) {
+		int count = 0;
+		String sql = "delete from board where id = ?";
+		
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+		){			
+			
+			pstmt.setLong(1, boardId);
+			count = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		
+		return count;
+	}
+	
 	private Connection getConnection() throws SQLException{
 		Connection conn = null;
 		
