@@ -17,7 +17,7 @@
 			<div id="board">
 				<form id="search_form" action="${pageContext.request.contextPath}/board" method="post">
 					<input type = "hidden" name = "a" value="search">
-					<input type="text" id="kwd" name="kwd" value="">
+					<input type="text" id="kwd" name="kwd" value="${keyword}">
 					<input type="submit" value="찾기">
 				</form>
 				<table class="tbl-ex">
@@ -52,11 +52,14 @@
 				</table>
 				
 				<div class="pager">
+					<c:if test="${not empty keyword}">
+						<c:set var="pageKeyword" value = "&a=search&kwd=${keyword}"></c:set>
+					</c:if>
 					<ul>
 						<li>
 							<c:choose>
 								<c:when test="${beginPage > 1}">
-									<a href="${pageContext.request.contextPath}/board?page=${beginPage-1}">◀</a>
+									<a href="${pageContext.request.contextPath}/board?page=${beginPage-1}${pageKeyword}">◀</a>
 								</c:when>
 								<c:otherwise>◀</c:otherwise>
 							</c:choose>
@@ -67,7 +70,7 @@
 									<li class="selected">${i}</li>
 								</c:when>
 								<c:when test="${(i >= startPage) and (i <= totalPage)}">
-									<li><a href="${pageContext.request.contextPath}/board?page=${i}">${i}</a></li>
+									<li><a href="${pageContext.request.contextPath}/board?page=${i}${pageKeyword}">${i}</a></li>
 								</c:when>
 								<c:otherwise>
 									<li>${i}</li>
@@ -77,7 +80,7 @@
 						<li>
 							<c:choose>
 								<c:when test="${endPage < totalPage}">
-									<a href="${pageContext.request.contextPath}/board?page=${endPage+1}">▶</a>
+									<a href="${pageContext.request.contextPath}/board?page=${endPage+1}${pageKeyword}">▶</a>
 								</c:when>
 								<c:otherwise>▶</c:otherwise>
 							</c:choose>

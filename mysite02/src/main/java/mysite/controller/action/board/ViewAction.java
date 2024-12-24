@@ -14,10 +14,10 @@ public class ViewAction implements Action {
 
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Long pageId = Long.parseLong(request.getParameter("pageId") == null ? "1" : request.getParameter("pageId"));
-		new BoardDao().updateViewCnt(pageId);
+		Long boardId = Long.parseLong(request.getParameter("boardId") == null ? "1" : request.getParameter("boardId"));
+		new BoardDao().updateViewCnt(boardId);
 		
-		BoardVo vo = new BoardDao().findById(pageId);
+		BoardVo vo = new BoardDao().findById(boardId);
 		request.setAttribute("board", vo);
 				
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/board/view.jsp");

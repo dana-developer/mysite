@@ -1,9 +1,11 @@
 package mysite.controller;
 
 import jakarta.servlet.annotation.WebServlet;
+import mysite.controller.action.board.DeleteAction;
 import mysite.controller.action.board.ListAction;
 import mysite.controller.action.board.ModifyAction;
 import mysite.controller.action.board.ModifyFormAction;
+import mysite.controller.action.board.SearchAction;
 import mysite.controller.action.board.ViewAction;
 import mysite.controller.action.board.WriteAction;
 import mysite.controller.action.board.WriteFormAction;
@@ -20,7 +22,9 @@ public class BoardServlet extends ActionServlet {
 			"modifyform", new ModifyFormAction(),
 			"modify", new ModifyAction(),
 			"writeform", new WriteFormAction(),
-			"write", new WriteAction()
+			"write", new WriteAction(),
+			"delete", new DeleteAction(),
+			"search", new SearchAction()
 	);
 
 	@Override

@@ -263,6 +263,84 @@ public class BoardDao {
 		return count;
 	}
 	
+
+	public List<BoardVo> findPageAllByKeyword(int offset1, int offset2, String keyword) {
+		List<BoardVo> result = new ArrayList<>();
+		String sql = "select a.id, a.title, a.contents, a.hit, date_format(a.reg_date, '%Y-%m-%d %h:%i:%s'), a.g_no, a.o_no, a.depth, a.user_id, b.name"
+				    + " from board a"
+				    + " join user b on a.user_id = b.id"
+				    + " where a.title like ?"
+				+ " order by g_no desc, o_no asc"
+				    +" limit ?, ?";
+		try (
+				Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+		){			
+			pstmt.setString(1, "%"+keyword+"%");
+			pstmt.setLong(2, offset1);
+			pstmt.setLong(3, offset2);
+			
+			ResultSet rs = pstmt.executeQuery();
+
+			while(rs.next()) {
+				Long id = rs.getLong(1);
+				String title = rs.getString(2);
+				String contents = rs.getString(3);
+				Long hit = rs.getLong(4);
+				String regDate = rs.getString(5);
+				Long gNo = rs.getLong(6);
+				Long oNo = rs.getLong(7);
+				Long depth = rs.getLong(8);
+				Long userId = rs.getLong(9);
+				String userName = rs.getString(10);
+				
+				BoardVo vo = new BoardVo();
+				vo.setId(id);
+				vo.setTitle(title);
+				vo.setContents(contents);
+				vo.setHit(hit);
+				vo.setRegDate(regDate);
+				vo.setgNo(gNo);
+				vo.setoNo(oNo);
+				vo.setDepth(depth);
+				vo.setUserId(userId);
+				vo.setUserName(userName);
+				
+				result.add(vo);
+			}
+			
+			rs.close();
+						
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} 
+		
+		return result;	
+	}
+	
+	public int countPagesByKeyword(String keyword) {
+		int count = 0;
+		
+		try (
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("select count(id) from board where title like ?");
+		){	
+			pstmt.setString(1, "%"+keyword+"%");
+			ResultSet rs = pstmt.executeQuery();
+
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+			
+			rs.close();
+			
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		
+		return count;
+	}
+	
 	private Connection getConnection() throws SQLException{
 		Connection conn = null;
 		

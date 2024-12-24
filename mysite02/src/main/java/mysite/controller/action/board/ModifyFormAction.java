@@ -14,8 +14,8 @@ public class ModifyFormAction implements Action {
 
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int pageId = Integer.parseInt(request.getParameter("pageId") == null ? "1" : request.getParameter("pageId"));
-		BoardVo vo = new BoardDao().findById(pageId);
+		int boardId = Integer.parseInt(request.getParameter("boardId") == null ? "1" : request.getParameter("boardId"));
+		BoardVo vo = new BoardDao().findById(boardId);
 		request.setAttribute("board", vo);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/board/modify.jsp");
