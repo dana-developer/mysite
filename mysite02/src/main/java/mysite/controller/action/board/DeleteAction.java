@@ -17,5 +17,4 @@ public class DeleteAction implements Action {
 		
 		response.sendRedirect(request.getContextPath()+"/board");
 	}
-
 }
