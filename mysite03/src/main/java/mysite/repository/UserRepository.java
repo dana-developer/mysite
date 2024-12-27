@@ -101,47 +101,31 @@ public class UserRepository {
 		return userVo;	
 	}
 	
-	public int update(Long id, String name, String gender) {
-		int count = 0;
+	public int update(UserVo vo) {
+		int result = 0;
 		
 		try (
 			Connection conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("update user set name = ?, gender = ? where id = ?");
-		){			
-			
-			pstmt.setString(1, name);
-			pstmt.setString(2, gender);
-			pstmt.setLong(3, id);
-
-			count = pstmt.executeUpdate();
-			
+			PreparedStatement pstmt1 = conn.prepareStatement("update user set name=?, gender=? where id=?");
+			PreparedStatement pstmt2 = conn.prepareStatement("update user set name=?, password=?, gender=? where id=?");
+		) {
+			if("".equals(vo.getPassword())) {
+				pstmt1.setString(1, vo.getName());
+				pstmt1.setString(2, vo.getGender());
+				pstmt1.setLong(3, vo.getId());
+				result = pstmt1.executeUpdate();
+			} else {
+				pstmt2.setString(1, vo.getName());
+				pstmt2.setString(2, vo.getPassword());
+				pstmt2.setString(3, vo.getGender());
+				pstmt2.setLong(4, vo.getId());
+				result = pstmt2.executeUpdate();
+			}
 		} catch (SQLException e) {
-			System.out.println("error:" + e);
+			System.out.println("Error:" + e);
 		}
 		
-		return count;
-	}
-	
-	public int update(Long id, String name, String gender, String password) {
-		int count = 0;
-		
-		try (
-			Connection conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("update user set name = ?, gender = ?, password = ? where id = ?");
-		){			
-			
-			pstmt.setString(1, name);
-			pstmt.setString(2, gender);
-			pstmt.setString(3, password);
-			pstmt.setLong(4, id);
-
-			count = pstmt.executeUpdate();
-			
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
-		
-		return count;
+		return result;				
 	}
 	
 	private Connection getConnection() throws SQLException{
@@ -158,4 +142,6 @@ public class UserRepository {
 		
 		return conn;
 	}
+
+
 }
