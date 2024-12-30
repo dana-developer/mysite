@@ -1,7 +1,5 @@
 package mysite.controller;
 
-import java.util.Map;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,14 +49,15 @@ public class BoardController {
 	
 	@RequestMapping(value = {"/write"}, method = RequestMethod.GET)
 	public String write(HttpSession session, 
-			Model model, 
+			Model model,
 			@RequestParam(value = "type") String type, 
 			@RequestParam(value = "id", required = false) Long id) {
 		UserVo authUser = (UserVo) session.getAttribute("authUser");
 		if(authUser == null) {
 			return "redirect:/board";
 		}
-		System.out.println(id);
+		model.addAttribute("type", type);
+		model.addAttribute("id", id);
 		return "board/write";
 	}
 	
@@ -70,5 +69,17 @@ public class BoardController {
 		}
 		boardService.addContents(vo, authUser.getId());
 		return "redirect:/board";
+	}
+	
+	@RequestMapping(value = {"/modify"}, method = RequestMethod.GET)
+	public String modify(Model model, @RequestParam(value = "boardId") Long boardId) {
+		model.addAttribute("board", boardService.getContents(boardId));
+		return "board/modify";
+	}
+	
+	@RequestMapping(value = {"/modify"}, method = RequestMethod.POST)
+	public String modify(BoardVo vo) {
+		boardService.updateContents(vo);
+		return "redirect:/board/view?boardId="+vo.getId();
 	}
 }

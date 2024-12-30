@@ -20,10 +20,33 @@
 	</bean>
 	
 	<!-- validator, conversionService, messageConverter를 자동으로 등록 -->
-	<mvc:annotation-driven />
+	<mvc:annotation-driven>
+		<mvc:argument-resolvers>
+			<bean class="mysite.security.AuthUserHandlerMethodArgumentResolver"></bean>
+		</mvc:argument-resolvers>
+	</mvc:annotation-driven>
 
 	<!-- DefaultServlet Handler --> 
 	<mvc:default-servlet-handler/>
+	
+	<!-- Interceptors -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/user/auth"></mvc:mapping>
+			<bean class="mysite.security.LoginInterceptor"></bean>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/user/logout"></mvc:mapping>
+			<bean class="mysite.security.LogoutInterceptor"></bean>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"></mvc:mapping>
+			<mvc:exclude-mapping path="/user/auth"></mvc:exclude-mapping>
+			<mvc:exclude-mapping path="/user/logout"></mvc:exclude-mapping>
+			<mvc:exclude-mapping path="/assets/**"></mvc:exclude-mapping>
+			<bean class="mysite.security.AuthInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
 
 	<context:annotation-config />
 	<context:component-scan base-package="mysite.controller" />

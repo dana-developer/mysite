@@ -22,10 +22,6 @@ public class BoardService {
 	}
 	
 	public void addContents(BoardVo vo, Long userId) {
-		/**
-		 * reply 구현 안됨!
-		 */
-		System.out.println(vo);
 		vo.setUserId(userId);
 
 		if(vo.getType().equals("reply") && vo.getId() != null) {
@@ -51,10 +47,10 @@ public class BoardService {
 //		
 //	}
 //	
-//	public void updateContents(BoardVo vo) {
-//		
-//	}
-//	
+	public void updateContents(BoardVo vo) {
+		boardRepository.update(vo);
+	}
+	
 	public void deleteContents(Long id, Long userId) {
 		boardRepository.deletById(id, userId);
 	}
@@ -62,16 +58,18 @@ public class BoardService {
 	public Map<String, Object> getContentsList(int currentPage, String keyword) {		
 		Map<String, Object> results = new HashMap<String, Object>();
 		List<BoardVo> list = null;
-		
+		int cntPages = 0;
+
 		if(keyword == null) {
 			list = boardRepository.findPageAll((currentPage - 1) * OFFSET, OFFSET);
+			cntPages = boardRepository.countPages();
 
 		} else {
 			list = boardRepository.findPageAllByKeyword((currentPage - 1) * OFFSET, OFFSET, keyword);
+			cntPages = boardRepository.countPagesByKeyword(keyword);
 		}
 		
 		// view의 pagination를 위한 데이터 값 계산
-		int cntPages = boardRepository.countPages();
 		int totalPages = Math.ceilDiv(cntPages, OFFSET);
 		int pageGroupNum = (currentPage / PAGER_OFFSET) + 1;
 		
@@ -88,7 +86,6 @@ public class BoardService {
 		results.put("totalPage", totalPages);
 		results.put("cntPages", cntPages);
 		results.put("keyword", keyword);
-		
 		return results;
 	}
 }

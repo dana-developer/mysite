@@ -20,7 +20,7 @@
 					<input type = "hidden" name = "id" value = '${id}'>
 					<table class="tbl-ex">
 						<tr>
-							<th colspan="2">글쓰기${id}</th>
+							<th colspan="2">글쓰기</th>
 						</tr>
 						<tr>
 							<td class="label">제목</td>
