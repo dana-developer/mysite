@@ -21,7 +21,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 			throws Exception {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-
+		
 		UserVo authUser = userService.getUser(email, password);
 		if(authUser == null) {
 			request.setAttribute("email", email);
