@@ -45,15 +45,61 @@
 		]]>
 	</update>
 	
-<!-- 	<insert id="insert" parameterType = "guestbookvo" >
+	<select id="countPagesByKeyword" parameterType = "String" resultType = "int">
 		<![CDATA[
-			insert into guestbook values (null, #{name}, #{password}, #{contents}, now())
+			select count(id) from board where title like #{keyword}
+		]]>
+	</select>
+	
+	<delete id="deleteById" parameterType = "map">
+		<![CDATA[
+			delete from board where id = #{id} and user_id = #{userId}
+		]]>
+	</delete>
+	
+	<select id="findMaxGroupId" resultType = "int">
+		<![CDATA[
+			select ifnull(max(g_no), 1) from board
+		]]>
+	</select>
+	
+	<update id="updateONo" parameterType = "boardvo">
+		<![CDATA[
+			update board set o_no = o_no+1 where g_no = #{gNo} and o_no >= (#{oNo} + 1)
+		]]>
+	</update>
+	
+	<select id="findPageAllByKeyword" parameterType = "map" resultType = "boardvo">
+		<![CDATA[
+			select a.id as id, 
+			a.title as title, 
+			a.contents as contents, 
+			a.hit as hit, 
+			date_format(a.reg_date, '%Y-%m-%d %h:%i:%s') as regDate, 
+			a.g_no as gNo, 
+			a.o_no as oNo, 
+			a.depth as depth, 
+			a.user_id as userId, 
+			b.name as name
+			  from board a
+			  join user b on a.user_id = b.id
+			 where a.title like #{keyword}
+		  order by gNo desc, oNo asc
+			 limit #{offset1}, #{offset2}
+		]]>
+	</select>
+	
+	<insert id="insertOrigin" parameterType = "map" >
+		<![CDATA[
+			insert into board (title, contents, hit, reg_date, g_no, o_no, depth, user_id)
+			     values (#{vo.title} , #{vo.contents} , 0, now(), #{gNo2}, 1, 0, #{vo.userId})
 		]]>
 	</insert>
 	
-	<delete id="deleteByIdAndPassword" parameterType = "map">
+	<insert id="insertReply" parameterType = "boardvo" >
 		<![CDATA[
-			delete from guestbook where id = #{id} and password = #{password}
+			insert into board (title, contents, hit, reg_date, g_no, o_no, depth, user_id)
+				 values (#{title} , #{contents}, 0, now(), #{gNo}, (#{oNo} + 1), (#{depth} + 1), #{userId})
 		]]>
-	</delete> -->
+	</insert>
 </mapper>

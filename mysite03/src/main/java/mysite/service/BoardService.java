@@ -52,7 +52,7 @@ public class BoardService {
 	}
 	
 	public void deleteContents(Long id, Long userId) {
-		boardRepository.deletById(id, userId);
+		boardRepository.deleteById(id, userId);
 	}
 	
 	public Map<String, Object> getContentsList(int currentPage, String keyword) {		

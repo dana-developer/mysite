@@ -49,187 +49,32 @@ public class BoardRepository {
 	
 
 	public int insertOrigin(BoardVo vo, int gNo) {
-		int count = 0;
-		String sql = "insert into board (title, contents, hit, reg_date, g_no, o_no, depth, user_id)"
-			 +" values (? , ? , 0, now(), ?, 1, 0, ?)";
-		
-		try (
-			Connection conn = dataSource.getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-		){			
-			
-			pstmt.setString(1, vo.getTitle());
-			pstmt.setString(2, vo.getContents());
-			pstmt.setInt(3, gNo);
-			pstmt.setLong(4, vo.getUserId());
-			count = pstmt.executeUpdate();
-			
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
-		
-		return count;
+		return sqlSession.insert("board.insertOrigin", Map.of("vo", vo, "gNo2", gNo));
 	}
 	
 	public int findMaxGroupId() {
-		int count = 0;
-		
-		try (
-			Connection conn = dataSource.getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("select ifnull(max(g_no), 1) from board");
-			ResultSet rs = pstmt.executeQuery();
-		){	
-			if(rs.next()) {
-				count = rs.getInt(1);
-			}
-			
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
-		
-		return count;
+		return sqlSession.selectOne("board.findMaxGroupId");
 	}
 	
 	public int updateONo(BoardVo vo) {
-		int count = 0;
-		String sql = "update board set o_no = o_no+1 where g_no = ? and o_no >= ?";
-		
-		try (
-			Connection conn = dataSource.getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-		){			
-			pstmt.setLong(1, vo.getgNo());
-			pstmt.setLong(2, vo.getoNo()+1);
-			count = pstmt.executeUpdate();
-			
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
-		
-		return count;
+		return sqlSession.update("board.updateONo", vo);
 	}
 	
 	public int insertReply(BoardVo vo) {
-		int count = 0;
-		String sql = "insert into board (title, contents, hit, reg_date, g_no, o_no, depth, user_id)"
-				   +" values (? , ? , 0, now(), ?, ?, ?, ?)";
-		
-		try (
-			Connection conn = dataSource.getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-		){			
-			
-			pstmt.setString(1, vo.getTitle());
-			pstmt.setString(2, vo.getContents());
-			pstmt.setLong(3, vo.getgNo());
-			pstmt.setLong(4, vo.getoNo()+1);
-			pstmt.setLong(5, vo.getDepth()+1);
-			pstmt.setLong(6, vo.getUserId());
-			count = pstmt.executeUpdate();
-			
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
-		
-		return count;
+		return sqlSession.insert("board.insertReply", vo);
 	}
 	
-	public int deletById(Long id, Long userId) {
-		int count = 0;
-		String sql = "delete from board where id = ? and user_id = ?";
-		
-		try (
-			Connection conn = dataSource.getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-		){			
-			
-			pstmt.setLong(1, id);
-			pstmt.setLong(2, userId);
-
-			count = pstmt.executeUpdate();
-			
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
-		
-		return count;
+	public int deleteById(Long id, Long userId) {
+		return sqlSession.delete("board.deleteById", Map.of("id", id, "userId", userId));
 	}
 	
 
 	public List<BoardVo> findPageAllByKeyword(int offset1, int offset2, String keyword) {
-		List<BoardVo> result = new ArrayList<>();
-		String sql = "select a.id, a.title, a.contents, a.hit, date_format(a.reg_date, '%Y-%m-%d %h:%i:%s'), a.g_no, a.o_no, a.depth, a.user_id, b.name"
-				    + " from board a"
-				    + " join user b on a.user_id = b.id"
-				    + " where a.title like ?"
-				+ " order by g_no desc, o_no asc"
-				    +" limit ?, ?";
-		try (
-				Connection conn = dataSource.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(sql);
-		){			
-			pstmt.setString(1, "%"+keyword+"%");
-			pstmt.setLong(2, offset1);
-			pstmt.setLong(3, offset2);
-			
-			ResultSet rs = pstmt.executeQuery();
-
-			while(rs.next()) {
-				Long id = rs.getLong(1);
-				String title = rs.getString(2);
-				String contents = rs.getString(3);
-				Long hit = rs.getLong(4);
-				String regDate = rs.getString(5);
-				Long gNo = rs.getLong(6);
-				Long oNo = rs.getLong(7);
-				Long depth = rs.getLong(8);
-				Long userId = rs.getLong(9);
-				String userName = rs.getString(10);
-				
-				BoardVo vo = new BoardVo();
-				vo.setId(id);
-				vo.setTitle(title);
-				vo.setContents(contents);
-				vo.setHit(hit);
-				vo.setRegDate(regDate);
-				vo.setgNo(gNo);
-				vo.setoNo(oNo);
-				vo.setDepth(depth);
-				vo.setUserId(userId);
-				vo.setUserName(userName);
-				
-				result.add(vo);
-			}
-			
-			rs.close();
-						
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} 
-		
-		return result;	
+		return sqlSession.selectList("board.findPageAllByKeyword", 
+				Map.of("offset1", offset1, "offset2", offset2, "keyword", "%" + keyword + "%"));	
 	}
 	
 	public int countPagesByKeyword(String keyword) {
-		int count = 0;
-		
-		try (
-			Connection conn = dataSource.getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("select count(id) from board where title like ?");
-		){	
-			pstmt.setString(1, "%"+keyword+"%");
-			ResultSet rs = pstmt.executeQuery();
-
-			if(rs.next()) {
-				count = rs.getInt(1);
-			}
-			
-			rs.close();
-			
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
-		
-		return count;
+		return sqlSession.selectOne("board.countPagesByKeyword", "%" + keyword + "%");		
 	}
 }
