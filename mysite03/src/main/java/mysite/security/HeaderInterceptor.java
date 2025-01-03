@@ -19,7 +19,7 @@ public class HeaderInterceptor implements HandlerInterceptor {
 			throws Exception {
 		
 		String title = siteService.getSite().getTitle();
-		request.setAttribute("title", title);
+		request.setAttribute("headerTitle", title);
 		
 		return true;
 	}
