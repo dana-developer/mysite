@@ -25,6 +25,10 @@
 			<bean class="mysite.security.AuthUserHandlerMethodArgumentResolver"></bean>
 		</mvc:argument-resolvers>
 	</mvc:annotation-driven>
+	
+	<!-- mvc url resource mapping -->
+	<mvc:resources mapping="/assets/upload-images/**" location="file:/Users/dayeon/Desktop/mysite-uploads/" >
+	</mvc:resources>
 
 	<!-- DefaultServlet Handler --> 
 	<mvc:default-servlet-handler/>

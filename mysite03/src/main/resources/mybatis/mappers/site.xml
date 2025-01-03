@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site">
+ 	<select id="findLastOne" resultType = "sitevo">
+		<![CDATA[
+			select id, title, welcome, profile, description
+		      from site 
+          order by id desc
+             limit 1
+		]]>
+	</select>
+	
+<!-- 	<insert id="insert" parameterType = "guestbookvo">
+		<![CDATA[
+			insert into guestbook values (null, #{name}, #{password}, #{contents}, now())
+		]]>
+	</insert>
+	
+	<delete id="deleteByIdAndPassword" parameterType = "map">
+		<![CDATA[
+			delete from guestbook where id = #{id} and password = #{password}
+		]]>
+	</delete> -->
+</mapper>
