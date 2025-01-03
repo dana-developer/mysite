@@ -11,15 +11,25 @@
 		]]>
 	</select>
 	
-<!-- 	<insert id="insert" parameterType = "guestbookvo">
-		<![CDATA[
-			insert into guestbook values (null, #{name}, #{password}, #{contents}, now())
-		]]>
-	</insert>
-	
-	<delete id="deleteByIdAndPassword" parameterType = "map">
-		<![CDATA[
-			delete from guestbook where id = #{id} and password = #{password}
-		]]>
-	</delete> -->
+	<update id="update" parameterType = "sitevo">
+		<choose>
+			<when test='profile == ""'>
+				<![CDATA[
+					update site set 
+							title = #{title}, 
+							welcome = #{welcome}, 
+							description = #{description}
+				]]>
+			</when>
+			<otherwise>
+				<![CDATA[
+					update site set 
+							title = #{title}, 
+							welcome = #{welcome}, 
+							profile = #{profile},
+							description = #{description}
+				]]>
+			</otherwise>
+		</choose>
+	</update>
 </mapper>

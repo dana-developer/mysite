@@ -35,7 +35,7 @@
     </logger>
 	
 	<!-- root -->
-	<root level="debug">
+	<root level="warn">
 		<appender-ref ref="consoleAppender" />
 	</root>
 

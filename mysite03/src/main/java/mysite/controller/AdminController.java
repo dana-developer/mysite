@@ -1,5 +1,7 @@
 package mysite.controller;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +13,7 @@ import mysite.service.FileUploadService;
 import mysite.service.SiteService;
 import mysite.vo.SiteVo;
 
-@Auth(role = "ADMIN") // 모든 메서드의 명시해야 하므로 
+@Auth(role = "ADMIN")
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -46,12 +48,23 @@ public class AdminController {
 		return "admin/user";
 	}
 	
-	@RequestMapping("/update")
+	@RequestMapping("/main/update")
 	public String update(
-		@RequestParam("email") String email, 
-		@RequestParam("file") MultipartFile file,
-		Model model) {
-		fileUploadService.restore(file);
+		@RequestParam("title") String title, 
+		@RequestParam("welcomeMessage") String welcomeMessage, 
+		@RequestParam("description") String description, 
+		@RequestParam("file1") MultipartFile file) {
+				
+		String url = Optional.ofNullable(fileUploadService.restore(file)).orElse("");
+		
+		SiteVo siteVo = new SiteVo();
+		
+		siteVo.setDescription(description);
+		siteVo.setProfile(url);
+		siteVo.setWelcome(welcomeMessage);
+		siteVo.setTitle(title);
+		
+		siteService.updateSite(siteVo);
 		return "redirect:/admin";
 	}
 }

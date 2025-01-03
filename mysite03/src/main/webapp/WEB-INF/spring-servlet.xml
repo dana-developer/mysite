@@ -50,6 +50,13 @@
 			<mvc:exclude-mapping path="/assets/**"></mvc:exclude-mapping>
 			<bean class="mysite.security.AuthInterceptor"></bean>
 		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"></mvc:mapping>
+			<mvc:exclude-mapping path="/user/auth"></mvc:exclude-mapping>
+			<mvc:exclude-mapping path="/user/logout"></mvc:exclude-mapping>
+			<mvc:exclude-mapping path="/assets/**"></mvc:exclude-mapping>
+			<bean class="mysite.security.HeaderInterceptor"></bean>
+		</mvc:interceptor>
 	</mvc:interceptors>
 
 	<context:annotation-config />

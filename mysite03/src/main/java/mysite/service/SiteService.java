@@ -17,7 +17,7 @@ public class SiteService {
 		return siteRepository.findLastOne();
 	}
 	
-	public void updateSite(SiteVo siteVo) {
-		
+	public int updateSite(SiteVo siteVo) {
+		return siteRepository.update(siteVo);
 	}
 }
