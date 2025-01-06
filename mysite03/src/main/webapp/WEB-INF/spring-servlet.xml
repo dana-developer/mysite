@@ -19,6 +19,9 @@
 	   <property name="order" value="1" />
 	</bean>
 	
+	<!-- ApplicationContextEventListener -->
+	<bean class = "mysite.event.ApplicationContextEventListener" ></bean>
+	
 	<!-- validator, conversionService, messageConverter를 자동으로 등록 -->
 	<mvc:annotation-driven>
 		<mvc:argument-resolvers>
@@ -67,10 +70,8 @@
 		</mvc:interceptor>
 		<mvc:interceptor>
 			<mvc:mapping path="/**"></mvc:mapping>
-			<mvc:exclude-mapping path="/user/auth"></mvc:exclude-mapping>
-			<mvc:exclude-mapping path="/user/logout"></mvc:exclude-mapping>
 			<mvc:exclude-mapping path="/assets/**"></mvc:exclude-mapping>
-			<bean class="mysite.security.HeaderInterceptor"></bean>
+			<bean class="mysite.interceptor.SiteInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>
 

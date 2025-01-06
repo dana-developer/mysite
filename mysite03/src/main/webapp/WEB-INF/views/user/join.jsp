@@ -21,7 +21,7 @@
 
 					<label class="block-label" for="email"><spring:message code = "user.join.label.email"/></label>
 					<input id="email" name="email" type="text" value="">
-					<input type="button" value="이메일확인">
+					<input type="button" value="<spring:message code = 'user.join.label.email.check'/>">
 					
 					<label class="block-label"><spring:message code = "user.join.label.password"/></label>
 					<input name="password" type="password" value="">
@@ -38,7 +38,7 @@
 						<label><spring:message code = "user.join.label.terms.message"/></label>
 					</fieldset>
 					
-					<input type="submit" value="가입하기">		
+					<input type="submit" value="<spring:message code = 'user.join.button.signup'/>">		
 				</form>
 			</div>
 		</div>
