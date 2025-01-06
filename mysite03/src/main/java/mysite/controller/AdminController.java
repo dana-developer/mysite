@@ -2,12 +2,14 @@ package mysite.controller;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.ServletContext;
 import mysite.security.Auth;
 import mysite.service.FileUploadService;
 import mysite.service.SiteService;
@@ -20,6 +22,9 @@ public class AdminController {
 	
 	private final SiteService siteService;
 	private final FileUploadService fileUploadService;
+	
+	@Autowired
+    private ServletContext servletContext;
 	
 	public AdminController(SiteService siteService, FileUploadService fileUploadService) {
 		this.siteService = siteService;
@@ -65,6 +70,8 @@ public class AdminController {
 		siteVo.setTitle(title);
 		
 		siteService.updateSite(siteVo);
+		servletContext.setAttribute("siteVo", siteVo);
+		
 		return "redirect:/admin";
 	}
 }

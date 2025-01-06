@@ -19,7 +19,6 @@ public class SiteRepository {
 	}
 	
 	public int update(SiteVo siteVo) {
-		System.out.println(siteVo);
 		return sqlSession.update("site.update", siteVo);
 	}
 }
