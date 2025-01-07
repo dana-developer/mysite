@@ -7,7 +7,6 @@ import javax.sql.DataSource;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StopWatch;
 
 import mysite.vo.UserVo;
 
@@ -28,17 +27,7 @@ public class UserRepository {
 	}
 	
 	public UserVo findByEmailAndPassword(String email, String password) {
-		StopWatch sw = new StopWatch();
-		sw.start();
-		
-		UserVo userVo = sqlSession.selectOne("user.findByEmailAndPassword", Map.of("email", email, "password", password));
-		
-		sw.stop();
-		
-		long totalTime = sw.getTotalTimeMillis();
-		System.out.println("[Execution Time][UserRepository.findByEmailAndPassword] " + totalTime + "mills"); // 로그
-		
-		return userVo;
+		return sqlSession.selectOne("user.findByEmailAndPassword", Map.of("email", email, "password", password));
 	}
 	
 	public UserVo findById(Long id) {
