@@ -17,10 +17,10 @@
 		<div id="wrapper">
 			<div id="content">
 				<div id="site-introduction">
-					<img id="profile" src="${pageContext.request.contextPath}${siteVo.profile}" style="width:500px">
-					<h2>${siteVo.welcome}</h2>
+					<img id="profile" src="${pageContext.request.contextPath}${site.profile}" style="width:500px">
+					<h2>${site.welcome}</h2>
 					<p>
-						${fn:replace(siteVo.description, newLine, "<br>")}
+						${fn:replace(site.description, newLine, "<br>")}
 						<a href="${pageContext.request.contextPath }/guestbook">방명록</a>에 글 남기기<br>
 					</p>
 				</div>

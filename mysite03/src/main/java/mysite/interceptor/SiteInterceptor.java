@@ -6,13 +6,16 @@ import org.springframework.web.servlet.LocaleResolver;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import mysite.service.SiteService;
+import mysite.vo.SiteVo;
 
 public class SiteInterceptor implements HandlerInterceptor {
 
 	private SiteService siteService;
 	private LocaleResolver localeResolver;
 
-	public SiteInterceptor(SiteService siteService, LocaleResolver localeResolver) {
+	public SiteInterceptor(
+			SiteService siteService, 
+			LocaleResolver localeResolver) {
 		this.siteService = siteService;
 		this.localeResolver = localeResolver;
 	}
@@ -20,8 +23,13 @@ public class SiteInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		String title = siteService.getSite().getTitle();
-		request.setAttribute("headerTitle", title);
+		
+		SiteVo siteVo = (SiteVo) request.getServletContext().getAttribute("siteVo");
+		
+		if(siteVo == null) { // siteVo가 ServletContext's Attribute Map이 없는 경우 세팅
+			siteVo = siteService.getSite();
+			request.getServletContext().setAttribute("siteVo", siteVo);
+		}
 		
 		String lang = localeResolver.resolveLocale(request).getLanguage();
 		request.setAttribute("lang", lang);
