@@ -40,4 +40,10 @@
 		</choose>
 	</update>
 	
+	<select id="findByEmail" parameterType = "String" resultType = "uservo">
+		<![CDATA[
+			select id, name, role from user where email = #{email}
+		]]>
+	</select>
+	
 </mapper>

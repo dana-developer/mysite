@@ -12,6 +12,38 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link href="${pageContext.request.contextPath}/assets/css/user.css"
 	rel="stylesheet" type="text/css">
+<script src="${pageContext.request.contextPath}/assets/js/jquery/jquery-1.9.0.js"></script>
+<script>
+	$(function(){
+		$("#btn-check").click(function(){
+			var email = $("#email").val();
+			
+			if(email == "") {
+				return;
+			}
+			
+			$.ajax({
+				url : "${pageContext.request.contextPath}/api/user/checkemail?email="+email,
+				type : "get",
+				dataType : "json",
+				success : function(response) {
+					if(response.exist) {
+						alert("이메일이 존재합니다. 다른 이메일을 사용해 주세요.");
+						$("#email").val("");
+						$("#email").focus();
+						return;
+					}
+					
+					$("#img-check").show();
+					$("#btn-check").hide();
+				},
+				error : function(xhr, status, err) {
+					console.error(err);
+				}
+			});
+		});
+	});
+</script>
 </head>
 <body>
 	<div id="container">
@@ -35,10 +67,11 @@
 						<spring:message code="user.join.label.email" />
 					</label>
 					<form:input path="email" />
-					<input type="button" value="<spring:message code = 'user.join.label.email.check'/>">
-					<p style = "padding: 5px 0; margin:0; color:#f00; text-align:left">
+					<input id="btn-check" type="button" value="<spring:message code = 'user.join.label.email.check'/>">
+					<img id="img-check" src="${pageContext.request.contextPath}/assets/images/check.png" style="vertical-align:bottom; width:24px; display: none">
+					<p style="color:#f00; text-align:left; padding:0">
 						<form:errors path="email" />
-					</p>
+					</p>	
 
 					<!-- password -->
 					<label class="block-label">
@@ -48,7 +81,6 @@
 					<p style = "padding: 5px 0; margin:0; color:#f00; text-align:left">
 						<form:errors path="password" />
 					</p>
-					
 					
 					<!-- gender -->
 					<fieldset>
