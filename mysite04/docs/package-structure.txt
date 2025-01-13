@@ -23,7 +23,7 @@
 	 |	|--- mysite
 	 |	|	|--- config
 	 |      |	|	|--- app
-	 |      |	|	|	|--- jdbc.properties **
+	 |      |	|	|	|--- jdbc.properties
 	 |      |	|	|	|--- mybatis
 	 |      |	|	|		|--- configuration.xml
 	 |      |	|	|		|--- mappers

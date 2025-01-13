@@ -1,5 +1,6 @@
 package mysite.interceptor;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.LocaleResolver;
 
@@ -10,15 +11,11 @@ import mysite.vo.SiteVo;
 
 public class SiteInterceptor implements HandlerInterceptor {
 
+	@Autowired
 	private SiteService siteService;
+	
+	@Autowired
 	private LocaleResolver localeResolver;
-
-	public SiteInterceptor(
-			SiteService siteService, 
-			LocaleResolver localeResolver) {
-		this.siteService = siteService;
-		this.localeResolver = localeResolver;
-	}
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
