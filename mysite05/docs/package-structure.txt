@@ -13,6 +13,8 @@ Package 구조
 |	 |	       |--- SecurityConfig.java
 |	 |	       |--- LocaleConfig.java
 |	 |	       |--- FileuploadConfig.java
+|	 |--- initializer
+|	 |    |--- MySiteWebApplicationInitializer
 |	 |--- controller
 |	 |--- service
 |	 |--- repository
