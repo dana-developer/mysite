@@ -4,11 +4,11 @@
 	 |	|--- mysite	
 	 |	|	|--- config
 	 |	|	|	|--- AppConfig.java
-	 |	|	|	|--- WebConfig.java **
+	 |	|	|	|--- WebConfig.java
 	 |	|	|	|--- app
 	 |	|	|	|	|--- DBConfig.java
 	 |	|	|	|	|--- MyBatisConfig.java
-	 |	|	|	|--- web **
+	 |	|	|	|--- web
 	 |	|	|	|	|--- MvcConfig.java
 	 |	|	|	|	|--- SecurityConfig.java
 	 |	|	|	|	|--- LocaleConfig.java
@@ -30,7 +30,7 @@
 	 |      |	|	|		|	|--- board.xml
 	 |      |	|	|		|	|--- user.xml
 	 |      |	|	|--- web
-	 |      |	|	|	|--- fileupload.properties **
+	 |      |	|	|	|--- fileupload.properties
 	 |      |	|	|	|--- messages
 	 |      |	|	|	|	|--- message_ko.properties
 	 |      |	|	|	|	|--- message_en.properties

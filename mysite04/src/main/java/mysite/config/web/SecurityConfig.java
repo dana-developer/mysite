@@ -17,7 +17,7 @@ import mysite.security.LogoutInterceptor;
 @Configuration
 @EnableWebMvc
 public class SecurityConfig implements WebMvcConfigurer {
-
+	
 	// Argument Resolver
 	@Bean
 	public HandlerMethodArgumentResolver handlerMethodArgumentResolver() {
@@ -28,7 +28,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
 		resolvers.add(handlerMethodArgumentResolver());
 	}
-
+	
 	// Interceptors
 	@Bean
 	public LoginInterceptor loginInterceptor() {
@@ -39,7 +39,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 	public LogoutInterceptor logoutInterceptor() {
 		return new LogoutInterceptor();
 	}
-
+	
 	@Bean
 	public AuthInterceptor authInterceptor() {
 		return new AuthInterceptor();
@@ -47,10 +47,17 @@ public class SecurityConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(loginInterceptor()).addPathPatterns("/user/auth");
-		registry.addInterceptor(logoutInterceptor()).addPathPatterns("/user/logout");
-		registry.addInterceptor(authInterceptor()).addPathPatterns("/**")
+		registry
+			.addInterceptor(loginInterceptor())
+			.addPathPatterns("/user/auth");
+		
+		registry
+			.addInterceptor(logoutInterceptor())
+			.addPathPatterns("/user/logout");
+		
+		registry
+			.addInterceptor(authInterceptor())
+			.addPathPatterns("/**")
 			.excludePathPatterns("/user/auth", "/user/logout", "/assets/**");
 	}
-
 }
