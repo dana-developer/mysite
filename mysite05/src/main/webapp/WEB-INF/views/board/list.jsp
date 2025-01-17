@@ -88,7 +88,7 @@
 					</ul>
 				</div>					
 				
-				<sec:authorize access="!isAuthenticated()">
+				<sec:authorize access="isAuthenticated()">
 					<div class="bottom">
 						<a href="${pageContext.request.contextPath}/board/write?type=origin" id="new-book">글쓰기</a>
 					</div>
