@@ -40,9 +40,9 @@
 		</choose>
 	</update>
 	
-	<select id="findByEmail" parameterType = "String" resultType = "uservo">
+	<select id="findByEmail" parameterType = "String" resultType = "map">
 		<![CDATA[
-			select id, name, role from user where email = #{email}
+			select id, name, email, password, role from user where email = #{email}
 		]]>
 	</select>
 	

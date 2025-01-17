@@ -105,7 +105,7 @@
 		</mvc:interceptor>
 	</mvc:interceptors>
 
-	<context:annotation-config />
+	<context:annotation-config/>
 	<context:component-scan
 		base-package="mysite.controller, mysite.exception" />
 

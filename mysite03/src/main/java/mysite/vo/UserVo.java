@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 
 public class UserVo {
+	
 	private Long id;
 
 	@NotEmpty

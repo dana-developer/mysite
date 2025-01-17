@@ -8,6 +8,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import mysite.vo.UserVo;
 
 @Repository
@@ -38,7 +40,12 @@ public class UserRepository {
 		return sqlSession.update("user.update", vo);			
 	}
 
-	public UserVo findByEmail(String email) {
-		return sqlSession.selectOne("user.findByEmail", email);
+//	public UserVo findByEmail(String email) {
+//		return sqlSession.selectOne("user.findByEmail", email);
+//	}
+	
+	public <R> R findByEmail(String email, Class<R> resultType) {
+		Map<String, Object> map = sqlSession.selectOne("user.findByEmail", email);
+		return new ObjectMapper().convertValue(map, resultType);
 	}
 }

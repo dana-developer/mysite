@@ -2,8 +2,10 @@ package mysite.initializer;
 
 import java.util.ResourceBundle;
 
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import jakarta.servlet.Filter;
 import jakarta.servlet.MultipartConfigElement;
 import jakarta.servlet.ServletRegistration.Dynamic;
 import mysite.config.AppConfig;
@@ -20,10 +22,15 @@ public class MySiteWebApplicationInitializer extends AbstractAnnotationConfigDis
 	protected Class<?>[] getServletConfigClasses() {
 		return new Class<?>[] {WebConfig.class};
 	}
-
+	
 	@Override
 	protected String[] getServletMappings() {
 		return new String[] {"/"};
+	}
+	
+	@Override
+	protected Filter[] getServletFilters() {
+		return new Filter[] {new DelegatingFilterProxy("springSecurityFilterChain")};
 	}
 
 	@Override
