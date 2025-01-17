@@ -1,5 +1,6 @@
 package mysite.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -8,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import jakarta.validation.Valid;
-import mysite.security.Auth;
-import mysite.security.AuthUser;
 import mysite.service.UserService;
 import mysite.vo.UserVo;
 
@@ -48,18 +47,30 @@ public class UserController {
 		return "user/login";
 	}
 	
-	@Auth
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
-	public String update(@AuthUser UserVo authUser, Model model) {
+	public String update(/*HttpSession session*/ Authentication authentication, Model model) {
+		// 1. HttpSession을 사용하는 방법
+//		SecurityContext sc = (SecurityContext) session.getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
+//		Authentication authentication = sc.getAuthentication();
+//		UserVo authUser = (UserVo) authentication.getPrincipal();
+//		
+		// 2. SecurityContextHolder(Spring Security ThreadLocal Helper Class)
+//		SecurityContext sc = SecurityContextHolder.getContext();
+//		Authentication authentication = sc.getAuthentication();
+//		UserVo authUser = (UserVo) authentication.getPrincipal();
+		
+		UserVo authUser = (UserVo) authentication.getPrincipal(); // Authentication authentication 파라미터로 해주면 위의 관련 코드가 작성된다.
+		
 		UserVo userVo = userService.getUser(authUser.getId());
 		model.addAttribute("vo", userVo);
 		
 		return "user/update";
 	}
 	
-	@Auth
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String update(@AuthUser UserVo authUser, UserVo userVo) {
+	public String update(Authentication authentication, UserVo userVo) {
+		UserVo authUser = (UserVo) authentication.getPrincipal();
+		
 		userVo.setId(authUser.getId());
 		userService.update(userVo);
 		
