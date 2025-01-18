@@ -43,9 +43,17 @@
 							<td>${vo.hit}</td>
 							<td>${vo.regDate}</td>
 							<td>
-								<c:if test="${vo.userId == authUser.id}">
-									<a href="${pageContext.request.contextPath}/board/delete?boardId=${vo.id}" class="del">삭제</a>
-								</c:if>
+								<sec:authorize access="isAuthenticated()">
+									<sec:authentication property="principal" var="authUser"/>
+									<c:choose>
+										<c:when test="${not empty authUser && authUser.id == vo.userId }">
+											<a href="${pageContext.request.contextPath}/board/delete?boardId=${vo.id}" class="del" style="background-image:url(${pageContext.request.contextPath }/assets/images/recycle.png)">삭제</a>
+										</c:when>
+										<c:otherwise>
+											&nbsp;
+										</c:otherwise>
+									</c:choose>									
+								</sec:authorize>
 							</td>
 						</tr>
 					</c:forEach>

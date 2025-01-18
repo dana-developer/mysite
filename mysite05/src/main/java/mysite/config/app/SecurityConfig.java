@@ -69,7 +69,7 @@ public class SecurityConfig {
         			//.authenticated()
         			.hasAnyRole("ADMIN", "USER")
 
-    				.requestMatchers(new RegexRequestMatcher("^/board/?(write|modify|delete|reply)$", null))
+    				.requestMatchers(new RegexRequestMatcher("^/board/?(write|modify|delete|view)$", null))
         			.hasAnyRole("ADMIN", "USER")
         			
         			.anyRequest()

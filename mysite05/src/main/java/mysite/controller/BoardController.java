@@ -1,5 +1,6 @@
 package mysite.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,14 +32,15 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = {"/view"}, method = RequestMethod.GET)
-	public String view(@RequestParam(value = "boardId") Long boardId, Model model) {
+	public String view(Authentication authentication, 
+			@RequestParam(value = "boardId") Long boardId, Model model) {
 		model.addAttribute("board", boardService.getContents(boardId));
 		return "board/view";
 	}
 	
 	@RequestMapping(value = {"/delete"}, method = RequestMethod.GET)
-	public String delete(HttpSession session, @RequestParam(value = "boardId") Long boardId) {
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
+	public String delete(Authentication authentication, @RequestParam(value = "boardId") Long boardId) {
+		UserVo authUser = (UserVo) authentication.getPrincipal();
 		if(authUser == null) {
 			return "redirect:/board";
 		}
@@ -48,11 +50,11 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = {"/write"}, method = RequestMethod.GET)
-	public String write(HttpSession session, 
+	public String write(Authentication authentication,
 			Model model,
 			@RequestParam(value = "type") String type, 
 			@RequestParam(value = "id", required = false) Long id) {
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
+		UserVo authUser = (UserVo) authentication.getPrincipal();
 		if(authUser == null) {
 			return "redirect:/board";
 		}
@@ -62,8 +64,9 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = {"/write"}, method = RequestMethod.POST)
-	public String write(HttpSession session, BoardVo vo) {
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
+	public String write(Authentication authentication, BoardVo vo) {
+		UserVo authUser = (UserVo) authentication.getPrincipal();
+		
 		if(authUser == null) {
 			return "redirect:/board";
 		}
