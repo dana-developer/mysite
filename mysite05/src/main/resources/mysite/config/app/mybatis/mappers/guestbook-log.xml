@@ -16,7 +16,7 @@
 	
 	<update id="updateByRegDate" parameterType = "String">
 		<![CDATA[
-			update guestbook_log set count = count - 1 where date_format(date, '%Y-%m-%d') = ?
+			update guestbook_log set count = count - 1 where date_format(date, '%Y-%m-%d') = #{regDate}
 		]]>
 	</update>
 </mapper>
