@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-@PropertySource("classpath:mysite/config/web/fileupload.properties")
+@PropertySource("classpath:config/fileupload.properties")
 public class FileUploadService {
 	
 	@Autowired
@@ -47,7 +47,8 @@ public class FileUploadService {
 			os.write(data);
 			os.close();
 			
-			return env.getProperty("fileupload.resourceUrl") + "/" + saveFilename;
+			String result =  env.getProperty("fileupload.resourceUrl") + "/" + saveFilename;
+			return result;
 		} catch(IOException e) {
 			throw new RuntimeException(e);
 		}
