@@ -33,6 +33,13 @@ public class SecurityConfig {
 	
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
+//		return new WebSecurityCustomizer() {
+//			@Override
+//			public void customize(WebSecurity web) {
+//				web.httpFirewall(new DefaultHttpFirewall());
+//			}
+//		};
+		
 		return (webSecurity) -> webSecurity.httpFirewall(new DefaultHttpFirewall());
 	}
 	
