@@ -68,7 +68,7 @@ public class SecurityConfig {
 		}).authorizeHttpRequests((authorizeRequests) -> {
 			/* ACL */
 			authorizeRequests.requestMatchers(new RegexRequestMatcher("^/admin/?.*$", null))
-					// .authenticated() // 사용자냐
+					// .authenticated() 
 					.hasAnyRole("ADMIN")
 
 					.requestMatchers(new RegexRequestMatcher("^/user/update$", null)).hasAnyRole("ADMIN", "USER")
@@ -81,7 +81,7 @@ public class SecurityConfig {
 		});
 		/*
 		.exceptionHandling(exceptionHandling -> {
-//			exceptionHandling.accessDeniedPage("/WEB-INF/views/errors/403.jsp");
+//			exceptionHandling.accessDeniedPage("/errors/403");
 			exceptionHandling.accessDeniedHandler(new AccessDeniedHandler() {
 
 				@Override

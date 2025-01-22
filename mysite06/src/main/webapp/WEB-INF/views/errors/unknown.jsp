@@ -9,9 +9,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>Exception Handler : Spring Controller</h1>
+	<h1>Unknown : Custom</h1>
 	<pre>
-		${errors }
+		?
 	</pre>
 </body>
 </html>

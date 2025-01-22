@@ -54,11 +54,10 @@ public class GlobalExceptionHandler {
 
 		// 4. HTML 응답: 사과 페이지(종료)
 		if (e instanceof NoHandlerFoundException || e instanceof NoResourceFoundException) {
-			request.
-			getRequestDispatcher("/error/404").forward(request, response);
+			request.getRequestDispatcher("/error/404").forward(request, response);
 		} else {
 			request.setAttribute("errors", errors.toString());
-			request.getRequestDispatcher("/WEB-INF/views/errors/exception.jsp").forward(request, response);
+			request.getRequestDispatcher("/error/500").forward(request, response);
 		}
 	}
 }

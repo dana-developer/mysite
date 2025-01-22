@@ -46,9 +46,8 @@ public class FileUploadService {
 			OutputStream os = new FileOutputStream(env.getProperty("fileupload.uploadLocation") + "/" + saveFilename);
 			os.write(data);
 			os.close();
-			
-			String result =  env.getProperty("fileupload.resourceUrl") + "/" + saveFilename;
-			return result;
+						
+			return env.getProperty("fileupload.resourceUrl") + "/" + saveFilename;
 		} catch(IOException e) {
 			throw new RuntimeException(e);
 		}
