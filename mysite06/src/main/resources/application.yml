@@ -1,21 +1,43 @@
+# spring configuration
 spring:
-  application:
-    name: mysite06
+   application:
+      name: mysite06
+   
+   # devtool
+   devtools:
+      restart: 
+         enabled: true
+      livereload:
+         enabled: true
 
-  devtools:
-    restart:
-      enabled: true
-    livereload:
-      enabled: true
-  aop:
-    auto: true
-    proxy-target-class: true
+   # whether bean definition overriding
+   main:
+      allow-bean-definition-overriding: true
 
-  main:
-    allow-bean-definition-overriding: true
+   aop:
+      auto: true
+      proxy-target-class: true
 
-#Server configuration
+   # message resources(i18n) 
+   messages: 
+      basename: messages/message
+      encoding: utf-8
+
+   datasource:
+      driver-class-name: org.mariadb.jdbc.Driver
+      url: jdbc:mariadb://192.168.0.19:3306/webdb
+      username: webdb
+      password: webdb
+      hikari:
+         minimum-idle: 10
+         maximum-pool-size: 20
+
+# mybatis
+mybatis:
+   config-location: classpath:mybatis/configuration.xml
+   
+# server configuration
 server:
-  port: 8080
-  servlet:
-    context-path: /mysite06
+   port: 8080
+   servlet: 
+      context-path: /mysite06
