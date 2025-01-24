@@ -1,0 +1,45 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<script>
+	window.addEventListener("load", function() {
+		anchors = document.querySelectorAll('#languages a');
+
+		anchors.forEach(function(el) {
+			el.addEventListener("click", function(event) {
+				event.preventDefault();
+				document.cookie = "lang=" + this.getAttribute('data-lang')
+						+ ";" + "path=" + "${pageContext.request.contextPath}"
+						+ ";" + "max-age=" + (30 * 24 * 60 * 60);
+
+				location.reload();
+			})
+		});
+	});
+</script>
+
+<div id="header">
+	<h1>[[${@site.title }]]</h1>
+
+	<!-- <div id="languages">
+		<div th:test='${lang == "en" }'>
+			<a href="" data-lang="ko">KO</a><a href="" class="active"
+				data-lang="en">EN</a>
+		</div>
+		<div th:test='${lang == "ko" }'>
+			<a href="" data-lang="ko" class="active">KO</a>
+			<a href="" data-lang="en">EN</a>
+		</div>
+	</div> -->
+	<ul>
+		<th:block sec:authorize="isAnonymous()">
+			<li><a th:href="@{/user/login}">로그인</a></li>
+			<li><a th:href="@{/user/join}">회원가입</a></li>
+		</th:block>
+		<th:block sec:authorize="isAuthenticated()">
+			<sec:authentication property="principal" var="authUser" />
+				<li><a th:href="@{/user/update}">회원정보수정</a></li>
+				<li><a th:href="@{/user/logout}">로그아웃</a></li>
+				<li>[[${authUser }]]</li>
+			</sec:authorize>
+		</th:block>
+	</ul>
+</div>
