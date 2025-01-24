@@ -28,3 +28,7 @@ input[type="submit"]	{ display:block; width:80px; margin:20px auto }
 #user p		{ text-align:center; padding:10px}
 
 #user p.jr-success	{ height:200px }
+
+.error {
+	color:#f00; text-align:left; padding:0
+}

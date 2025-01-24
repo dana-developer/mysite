@@ -50,39 +50,42 @@
 
 					<!-- name -->
 					<label class="block-label" for="name"> 
-						이름
+						[[#{user.join.label.name}]]
 					</label>
 					<input th:field="*{name}"/>
-
+					<div class="error" th:errors="*{name}"></div>
+					
 					<!-- email -->
 					<label class="block-label" for="email"> 
-						이메일
+						[[#{user.join.label.email}]]
 					</label>
-					<input th:field="*{email}" />
-					<input id="btn-check" type="button" value="이메일 확인">
+					<input type="text" th:field="*{email}" />
+					<input id="btn-check" type="button" th:value="#{user.join.label.email.check}">
 					<img id="img-check" th:src="@{/assets/images/check.png}" style="vertical-align:bottom; width:24px; display: none">	
+					<div class="error" th:errors="*{email}"></div>
 
 					<!-- password -->
 					<label class="block-label">
-						비밀번호
+						[[#{user.join.label.password}]]
 					</label>
 					<label for="password">password:</label>
 					<input type="password" th:field="*{password}" />
+					<div class="error" th:errors="*{password}"></div>
 					
 					<!-- gender -->
 					<fieldset>
-						<legend>성별</legend>
-						<label>남</label> <input type="radio" name="gender" value="female" checked="checked">
-						<label>여</label> <input type="radio" name="gender" value="male">
+						<legend>[[#{user.join.label.gender}]]</legend>
+						<label>[[#{user.join.label.gender.female}]]</label> <input type="radio" id="gender-female" name="gender" value="female" th:checked="*{gender == 'female'}">
+						<label>[[#{user.join.label.gender.male}]]</label> <input type="radio" id="gender-male" name="gender" value="male"  th:checked="*{gender == 'male'}">
 					</fieldset>
 
 					<fieldset>
-						<legend>약관동의</legend>
+						<legend>[[#{user.join.label.terms}]]</legend>
 						<input id="agree-prov" type="checkbox" name="agreeProv" value="y">
-						<label>이용약관에 동의합니다.</label>
+						<label>[[#{user.join.label.terms.message}]]</label>
 					</fieldset>
 
-					<input type="submit" value="가입하기">
+					<input type="submit" th:value="#{user.join.button.signup}">
 				</form>
 			</div>
 		</div>

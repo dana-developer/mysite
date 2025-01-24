@@ -33,7 +33,6 @@ public class UserController {
 			model.addAllAttributes(result.getModel());
 			return "user/join";
 		}
-		System.out.println("join : " + userVo);
 		userService.join(userVo);
 		return "redirect:/user/joinsuccess";
 	}
