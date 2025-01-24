@@ -1,9 +1,9 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <div id="navigation">
 	<ul>
-		<li><a th:href="@{/}">홈</a></li>
-		<li><a th:href="@{/guestbook}">방명록</a></li>
-		<li><a th:href="@{/board}">게시판</a></li>
-		<li><a th:href="@{/gallery}">갤러리</a></li>
+		<li><a th:href="@{/}">[[#{navigation.li.main}]]</a></li>
+		<li><a th:href="@{/guestbook}">[[#{navigation.li.guestbook}]]</a></li>
+		<li><a th:href="@{/board}">[[#{navigation.li.board}]]</a></li>
+		<li><a th:href="@{/gallery}">[[#{navigation.li.gallery}]]</a></li>
 	</ul>
 </div>

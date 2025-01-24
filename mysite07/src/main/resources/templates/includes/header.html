@@ -19,26 +19,26 @@
 <div id="header">
 	<h1>[[${@site.title }]]</h1>
 
-	<!-- <div id="languages">
-		<div th:test='${lang == "en" }'>
-			<a href="" data-lang="ko">KO</a><a href="" class="active"
-				data-lang="en">EN</a>
+	<div id="languages">
+		<div th:if='${lang == "en" }'>
+			<a href="" data-lang="ko">KO</a>
+			<a href="" class="active" data-lang="en">EN</a>
 		</div>
-		<div th:test='${lang == "ko" }'>
+		<div th:if='${lang == "ko" }'>
 			<a href="" data-lang="ko" class="active">KO</a>
 			<a href="" data-lang="en">EN</a>
 		</div>
-	</div> -->
+	</div>
 	<ul>
 		<th:block sec:authorize="isAnonymous()">
-			<li><a th:href="@{/user/login}">로그인</a></li>
-			<li><a th:href="@{/user/join}">회원가입</a></li>
+			<li><a th:href="@{/user/login}">[[#{header.gnb.login}]]</a></li>
+			<li><a th:href="@{/user/join}">[[#{header.gnb.join}]]</a></li>
 		</th:block>
 		<th:block sec:authorize="isAuthenticated()">
 			<sec:authentication property="principal" var="authUser" />
-				<li><a th:href="@{/user/update}">회원정보수정</a></li>
-				<li><a th:href="@{/user/logout}">로그아웃</a></li>
-				<li>[[${authUser }]]</li>
+				<li><a th:href="@{/user/update}">[[#{header.gnb.settings}]]</a></li>
+				<li><a th:href="@{/user/logout}">[[#{header.gnb.logout}]]</a></li>
+				<li>[[#{header.gnb.greeting}]] [[${#authentication.principal.name }]] </li>
 			</sec:authorize>
 		</th:block>
 	</ul>

@@ -25,5 +25,10 @@ public class UserDetailsImpl extends UserVo implements UserDetails {
 	public String getUsername() {
 		return getEmail();
 	}
+	
+	@Override
+	public Long getId() {
+		return super.getId();
+	}
 
 }

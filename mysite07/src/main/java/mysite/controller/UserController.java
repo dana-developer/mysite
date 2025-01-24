@@ -29,11 +29,11 @@ public class UserController {
 	
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	public String join(@ModelAttribute @Valid UserVo userVo, BindingResult result, Model model) {
-		System.out.println(userVo);
 		if(result.hasErrors()) {
 			model.addAllAttributes(result.getModel());
 			return "user/join";
 		}
+		System.out.println("join : " + userVo);
 		userService.join(userVo);
 		return "redirect:/user/joinsuccess";
 	}

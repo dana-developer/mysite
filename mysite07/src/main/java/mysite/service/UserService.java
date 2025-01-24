@@ -18,7 +18,9 @@ public class UserService {
 
 	public void join(UserVo userVo) {
 		userVo.setPassword(passwordEncoder.encode(userVo.getPassword()));
+		System.out.println("**************"+userVo);
 		userRepository.insert(userVo);
+		
 	}
 	
 	public UserVo getUser(String email, String password) {

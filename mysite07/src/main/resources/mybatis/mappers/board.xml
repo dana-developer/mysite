@@ -13,7 +13,7 @@
 			a.o_no as oNo, 
 			a.depth as depth, 
 			a.user_id as userId, 
-			b.name as name
+			b.name as userName
 			  from board a
 			  join user b on a.user_id = b.id
 		  order by gNo desc, oNo asc

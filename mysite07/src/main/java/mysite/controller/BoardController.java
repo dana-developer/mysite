@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import jakarta.servlet.http.HttpSession;
 import mysite.service.BoardService;
 import mysite.vo.BoardVo;
 import mysite.vo.UserVo;
@@ -28,6 +27,7 @@ public class BoardController {
 			Model model) {
 		
 		model.addAttribute("result", boardService.getContentsList(currentPage, keyword));
+		System.out.println(boardService.getContentsList(currentPage, keyword));
 		return "board/list";
 	}
 	

@@ -8,11 +8,12 @@
 </head>
 <body>
 	<div id="container">
-        <th:block th:include="includes/header"></th:block>
+		<th:block th:include="includes/header"></th:block>
 		<div id="content">
 			<div id="board">
-				<form id="search_form" action="${pageContext.request.contextPath}/board" method="get">
-					<input type="text" id="kwd" name="kwd" value="${result.keyword}">
+				<form id="search_form"
+					th:action="@{/board}" method="get">
+					<input type="text" id="kwd" name="kwd" th:value="*{result.keyword}">
 					<input type="submit" value="찾기">
 				</form>
 				<table class="tbl-ex">
@@ -24,76 +25,106 @@
 						<th>작성일</th>
 						<th>&nbsp;</th>
 					</tr>
+
+					<tr th:each="vo, status: ${result.list}">
+ 						<td th:text="${result.cntPages - (result.currentPage - 1) * 5 - status.index}"></td>
+ 						<td td:style="text-align:left; padding-left:${vo.depth * 20}px">
+ 							<th:block th:if="${vo.depth > 0}">
+								<img th:src="@{/assets/images/reply.png}">
+							</th:block> 
+ 							<a th:href="@{/board/view(boardId=${vo.id})}">[[${vo.title}]]</a>
+ 						</td>
+ 						
+						<td>[[${vo.userName}]]</td>
+						<td>[[${vo.hit}]]</td>
+						<td>[[${vo.regDate}]]</td>
+						
+						<td>
+							<th:block sec:authorize="isAuthenticated()">
+								<th:block th:if="${#authentication.principal.id == vo.userId }">
+									<a
+											th:href="@{/board/delete(boardId=${vo.id})}"
+											class="del"
+											style="background-image: url(/assets/images/recycle.png)">삭제</a>
+								</th:block>
+								<th:block th:unless="${#authentication.principal.id == vo.userId }">
+									&nbsp;
+								</th:block>		
 					
-						<tr th:each="vo, status: ${result.list}">
-							<td>${result.cntPages - (result.currentPage - 1) * 5 - status.index}</td>
-							<td >
-								<th:block if="${vo.depth > 0}">
-									<img th:src="@{/assets/images/reply.png}">
-								</c:if>
-									<a th:href="${/board/view?boardId=${vo.id}}">${vo.title}</a>
-							</td>
-							<td>${vo.userName}</td>
-							<td>${vo.hit}</td>
-							<td>${vo.regDate}</td>
-							<td>
-								<sec:authorize access="isAuthenticated()">
-									<sec:authentication property="principal" var="authUser"/>
-									<c:choose>
-										<c:when test="${not empty authUser && authUser.id == vo.userId }">
-											<a href="${pageContext.request.contextPath}/board/delete?boardId=${vo.id}" class="del" style="background-image:url(${pageContext.request.contextPath }/assets/images/recycle.png)">삭제</a>
-										</c:when>
-										<c:otherwise>
-											&nbsp;
-										</c:otherwise>
-									</c:choose>									
-								</sec:authorize>
-							</td>
-						</tr>
+							</th:block>
+						</td>
+					</tr>
 				</table>
 				
 				<div class="pager">
-					<c:if test="${not empty result.keyword}">
-						<c:set var="pageKeyword" value = "&kwd=${result.keyword}"></c:set>
-					</c:if>
-					<ul>
-						<li>
-							<c:choose>
-								<c:when test="${result.beginPage > 1}">
-									<a href="${pageContext.request.contextPath}/board?page=${result.beginPage-1}${pageKeyword}">◀</a>
-								</c:when>
-								<c:otherwise>◀</c:otherwise>
-							</c:choose>
-						</li>
-						<c:forEach var='i' begin="${result.beginPage}" end ="${result.endPage}">
-							<c:choose>
-								<c:when test="${i == result.currentPage}">
-									<li class="selected">${i}</li>
-								</c:when>
-								<c:when test="${(i >= result.startPage) and (i <= result.totalPage)}">
-									<li><a href="${pageContext.request.contextPath}/board?page=${i}${pageKeyword}">${i}</a></li>
-								</c:when>
-								<c:otherwise>
-									<li>${i}</li>
-								</c:otherwise>
-							</c:choose>
-						</c:forEach>
-						<li>
-							<c:choose>
-								<c:when test="${result.endPage < result.totalPage}">
-									<a href="${pageContext.request.contextPath}/board?page=${result.endPage+1}${pageKeyword}">▶</a>
-								</c:when>
-								<c:otherwise>▶</c:otherwise>
-							</c:choose>
-						</li>	
-					</ul>
-				</div>					
-				
-				<sec:authorize access="isAuthenticated()">
+					<th:block th:unless="${result.keyword != null}">
+						<ul>
+							<li>
+								<th:block th:if="${result.beginPage > 1}">
+									<a th:href="@{/board(page=${result.beginPage - 1}, kwd=${result.keyword})}">◀</a>
+								</th:block>
+								<th:block th:unless="${result.beginPage > 1}">◀</c:otherwise>
+							</li>
+							
+							<th:block th:each="i : ${#numbers.sequence(result.beginPage, result.endPage)}">
+								<th:block th:if="${i == result.currentPage}">
+									<li class="selected">[[${i}]]</li>
+								</th:block>
+								<th:block th:if="${(i != result.currentPage) and (i >= result.startPage) and (i <= result.totalPage)}">
+									<li><a th:href="@{/board(page=${i}, kwd=${result.keyword})}">[[${i}]]</a></li>
+								</th:block>
+								<th:block th:unless="${i >= result.startPage and i <= result.totalPage}">
+									<li>[[${i}]]</li>
+								</th:block>
+							</th:block>
+							
+							<li>
+								<th:block th:if="${result.endPage < result.totalPage}">
+									<a th:href="@{/board(page=${result.endPage + 1}, kwd=${result.keyword})}">▶</a>
+								</th:block>
+								<th:block th:unless="${result.endPage < result.totalPage}">▶</c:otherwise>
+							</li>	
+						</ul>
+					</th:block>
+					
+					<th:block th:unless="${result.keyword == null}">
+						<ul>
+							<li>
+								<th:block th:if="${result.beginPage > 1}">
+									<a th:href="@{/board(page=${result.beginPage - 1})}">◀</a>
+								</th:block>
+								<th:block th:unless="${result.beginPage > 1}">◀</c:otherwise>
+							</li>
+							
+							<th:block th:each="i : ${#numbers.sequence(result.beginPage, result.endPage)}">
+								<th:block th:if="${i == result.currentPage}">
+									<li class="selected">[[${i}]]</li>
+								</th:block>
+								<th:block th:if="${(i != result.currentPage) and (i >= result.startPage) and (i <= result.totalPage)}">
+									<li><a th:href="@{/board(page=${i})}">[[${i}]]</a></li>
+								</th:block>
+								<th:block th:unless="${i >= result.startPage and i <= result.totalPage}">
+									<li>[[${i}]]</li>
+								</th:block>
+							</th:block>
+							
+							<li>
+								<th:block th:if="${result.endPage < result.totalPage}">
+									<a th:href="@{/board(page=${result.endPage + 1})}">▶</a>
+								</th:block>
+								<th:block th:unless="${result.endPage < result.totalPage}">▶</c:otherwise>
+							</li>	
+						</ul>
+					</th:block>
+					
+				</div>
+
+				<th:block sec:authorize="isAuthenticated()">
 					<div class="bottom">
-						<a href="${pageContext.request.contextPath}/board/write?type=origin" id="new-book">글쓰기</a>
+						<a th:href="@{/board/write?type=origin}" id="new-book">글쓰기</a>
 					</div>
-				</sec:authorize>	
+				</th:block>
+
 			</div>
 		</div>
 		<th:block th:include="includes/navigation"></th:block>
